@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaRescue — робот-логистика будущего</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Ambient background ===== -->
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+<div class="bg-glow-3"></div>
+<div class="bg-grain" aria-hidden="true"></div>
+
+<!-- ===== Header ===== -->
+<header class="site-header">
+  <a href="#top" class="logo">
+    <span class="logo-mark">
+      <svg viewBox="0 0 40 40" width="30" height="30"><rect x="2" y="12" width="36" height="24" rx="8" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="13" cy="20" r="2.6" fill="currentColor"/><circle cx="27" cy="20" r="2.6" fill="currentColor"/><path d="M14 28h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M20 12V6" stroke="currentColor" stroke-width="2.4"/><circle cx="20" cy="4" r="2.4" fill="currentColor"/></svg>
+    </span>
+    <span class="logo-text">Nova<b>Rescue</b></span>
+  </a>
+
+  <nav class="main-nav" id="mainNav">
+    <a href="#problem" data-i18n="nav.problem">Проблема</a>
+    <a href="#how" data-i18n="nav.how">Как это работает</a>
+    <a href="#map" data-i18n="nav.map">Карта</a>
+    <a href="#order" data-i18n="nav.order">Заказать</a>
+    <a href="#track" data-i18n="nav.track">Отследить</a>
+    <a href="#points" data-i18n="nav.points">Пункты</a>
+    <a href="#team" data-i18n="nav.team">О нас</a>
+  </nav>
+
+  <div class="header-controls">
+    <div class="lang-switch" id="langSwitch">
+      <button class="lang-btn" data-lang="kk">KZ</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Алатау · умная городская логистика</p>
+      <h1 class="hero-title">
+        <span data-i18n="hero.titleLine1">Доставка,</span><br>
+        <span class="accent" data-i18n="hero.titleLine2">которая живёт под городом</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero.sub">NovaRescue — автономная роботизированная сеть: склад на окраине города сортирует товар, курьер-робот везёт его подземными тоннелями под линиями ЛРТ прямо к ближайшему пункту выдачи.</p>
+      <div class="hero-actions">
+        <a href="#order" class="btn btn-primary" data-i18n="hero.ctaOrder">Оформить заказ</a>
+        <a href="#how" class="btn btn-ghost" data-i18n="hero.ctaHow">Как это устроено</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>&lt;35 <span data-i18n="hero.min">мин</span></b><span data-i18n="hero.statSpeed">средняя доставка</span></div>
+        <div><b>24/7</b><span data-i18n="hero.statAuto">автономная работа</span></div>
+        <div><b>0 <span data-i18n="hero.km">км пробок</span></b><span data-i18n="hero.statTraffic">маршрут под ЛРТ</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <svg class="hero-route" viewBox="0 0 520 620" fill="none">
+        <path id="heroPath" d="M60 40 C 60 160, 460 140, 460 260 C 460 380, 60 360, 60 480 C 60 560, 200 560, 260 600" stroke="url(#routeGrad)" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="routeGrad" x1="0" y1="0" x2="0" y2="620" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#7B5CFF"/>
+            <stop offset="1" stop-color="#FF7A45"/>
+          </linearGradient>
+        </defs>
+        <g class="hero-stop" transform="translate(60,40)"><circle r="9" class="stop-ring"/><circle r="4" class="stop-dot"/></g>
+        <g class="hero-stop" transform="translate(460,260)"><circle r="9" class="stop-ring"/><circle r="4" class="stop-dot"/></g>
+        <g class="hero-stop" transform="translate(60,480)"><circle r="9" class="stop-ring"/><circle r="4" class="stop-dot"/></g>
+        <g class="hero-stop" transform="translate(260,600)"><circle r="10" class="stop-ring stop-end"/><circle r="5" class="stop-dot"/></g>
+        <g id="heroBot" class="hero-bot">
+          <circle r="14" fill="#12111F" stroke="#FF7A45" stroke-width="2"/>
+          <rect x="-6" y="-6" width="12" height="9" rx="2" fill="#FF7A45"/>
+          <circle cx="0" cy="-1.5" r="2.2" fill="#12111F"/>
+        </g>
+      </svg>
+      <div class="hero-badge hero-badge-1"><span data-i18n="hero.badgeWarehouse">Склад · окраина</span></div>
+      <div class="hero-badge hero-badge-2"><span data-i18n="hero.badgeTunnel">Тоннель под ЛРТ</span></div>
+      <div class="hero-badge hero-badge-3"><span data-i18n="hero.badgePoint">Пункт выдачи</span></div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM ===== -->
+  <section class="section" id="problem">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="problem.eyebrow">Почему сейчас</span>
+      <h2 data-i18n="problem.title">Города задыхаются от собственной логистики</h2>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <span class="problem-num">01</span>
+        <h3 data-i18n="problem.c1t">Рост объёмов доставки</h3>
+        <p data-i18n="problem.c1p">Количество заказов растёт быстрее, чем городская инфраструктура успевает под них подстраиваться.</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-num">02</span>
+        <h3 data-i18n="problem.c2t">Пробки на дорогах</h3>
+        <p data-i18n="problem.c2p">Курьерский транспорт стоит в тех же заторах, что и весь остальной город.</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-num">03</span>
+        <h3 data-i18n="problem.c3t">Высокие затраты времени</h3>
+        <p data-i18n="problem.c3p">Каждая лишняя минута в пути — это стоимость, которую в итоге оплачивает клиент.</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-num">04</span>
+        <h3 data-i18n="problem.c4t">Опасный ручной труд</h3>
+        <p data-i18n="problem.c4p">Перевозка тяжёлых грузов людьми — это риск травм и нагрузка на здоровье курьеров.</p>
+      </div>
+      <div class="problem-card problem-card-wide">
+        <span class="problem-num">05</span>
+        <h3 data-i18n="problem.c5t">Безопасность операций</h3>
+        <p data-i18n="problem.c5p">Логистика внутри города требует постоянного контроля — человеческий фактор здесь особенно уязвим.</p>
+      </div>
+    </div>
+    <p class="problem-solution" data-i18n="problem.solution">NovaRescue решает всё это с помощью автономной роботизированной системы под управлением искусственного интеллекта — доставка становится быстрее, безопаснее и эффективнее.</p>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section section-alt" id="how">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="how.eyebrow">Маршрут заказа</span>
+      <h2 data-i18n="how.title">От склада на окраине — до вашей двери</h2>
+    </div>
+
+    <div class="line-diagram">
+      <div class="line-track"><div class="line-fill" id="lineFill"></div></div>
+
+      <div class="line-stop" data-step="1">
+        <div class="line-dot"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6v9a1 1 0 01-1 1h-4v-6H8v6H4a1 1 0 01-1-1z"/></svg></div>
+        <div class="line-content">
+          <span class="line-tag" data-i18n="how.s1tag">Станция 1</span>
+          <h3 data-i18n="how.s1t">Склад на окраине города</h3>
+          <p data-i18n="how.s1p">Товары от партнёров — кафе, магазинов, аптек — поступают на большой сортировочный склад за пределами города.</p>
+        </div>
+      </div>
+
+      <div class="line-stop" data-step="2">
+        <div class="line-dot"><svg viewBox="0 0 24 24"><path d="M4 4h16v6H4zM6 12h12v2H6zM6 16h8v2H6z"/></svg></div>
+        <div class="line-content">
+          <span class="line-tag" data-i18n="how.s2tag">Станция 2</span>
+          <h3 data-i18n="how.s2t">Автоматическая сортировка</h3>
+          <p data-i18n="how.s2p">Система распределяет посылки по направлениям и передаёт их роботу-курьеру для городской перевозки.</p>
+        </div>
+      </div>
+
+      <div class="line-stop" data-step="3">
+        <div class="line-dot"><svg viewBox="0 0 24 24"><path d="M12 2l9 4v6c0 5-3.8 8.7-9 10-5.2-1.3-9-5-9-10V6z"/></svg></div>
+        <div class="line-content">
+          <span class="line-tag" data-i18n="how.s3tag">Станция 3</span>
+          <h3 data-i18n="how.s3t">Подземный тоннель под ЛРТ</h3>
+          <p data-i18n="how.s3p">Робот движется по выделенным подземным маршрутам под линиями лёгкого рельсового транспорта — без светофоров и пробок.</p>
+        </div>
+      </div>
+
+      <div class="line-stop" data-step="4">
+        <div class="line-dot"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.2-7-11a7 7 0 0114 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4" fill="#0A0A14"/></svg></div>
+        <div class="line-content">
+          <span class="line-tag" data-i18n="how.s4tag">Станция 4</span>
+          <h3 data-i18n="how.s4t">Пункт выдачи рядом с вами</h3>
+          <p data-i18n="how.s4p">В каждом ЖК и на людных точках города — пункт выдачи. Заберите заказ по трек-коду или геолокации.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-strip">
+      <div class="feature-pill"><b data-i18n="how.f1t">Быстрая доставка</b><span data-i18n="how.f1p">Едет там, где нет пробок — под землёй</span></div>
+      <div class="feature-pill"><b data-i18n="how.f2t">Безопасность</b><span data-i18n="how.f2p">Контроль и мониторинг груза на всём пути</span></div>
+      <div class="feature-pill"><b data-i18n="how.f3t">ИИ-навигация</b><span data-i18n="how.f3p">Маршрут строится и корректируется автоматически</span></div>
+      <div class="feature-pill"><b data-i18n="how.f4t">Автономность</b><span data-i18n="how.f4p">Работает без постоянного участия человека</span></div>
+    </div>
+
+    <div class="robots-showcase">
+      <div class="robot-item">
+        <img src="4194db97-acfa-4594-b2dd-74d2bf48f1e3.jpeg" alt="VEX Robot - курьер" class="robot-img">
+        <p class="robot-label" data-i18n="how.robotVex">Робот-курьер на основе VEX Robotics</p>
+      </div>
+      <div class="robot-item">
+        <img src="IMG_3368.jpeg" alt="Robot assembly - сборка" class="robot-img">
+        <p class="robot-label" data-i18n="how.robotBuild">Модульная конструкция для быстрого обслуживания</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIVE MAP ===== -->
+  <section class="section section-alt" id="map">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="map.eyebrow">Живая карта</span>
+      <h2 data-i18n="map.title">Всё, что можно перевезти по городу</h2>
+      <p class="section-sub" data-i18n="map.sub">Склад, кафе, аптеки, административные здания и пункты выдачи — вся сеть NovaRescue на одной карте Алатау.</p>
+    </div>
+
+    <div class="map-shell">
+      <div class="city-map" id="cityMap">
+        <svg class="city-map-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="mapBg" x1="0" y1="0" x2="1000" y2="600" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#15142B"/>
+              <stop offset="1" stop-color="#0D0C1C"/>
+            </linearGradient>
+            <pattern id="mapGrid" width="42" height="42" patternUnits="userSpaceOnUse">
+              <path d="M42 0H0V42" fill="none" stroke="#ffffff" stroke-opacity="0.045"/>
+            </pattern>
+          </defs>
+          <rect width="1000" height="600" fill="url(#mapBg)"/>
+          <rect width="1000" height="600" fill="url(#mapGrid)"/>
+          <!-- districts -->
+          <rect x="60" y="360" width="260" height="180" rx="14" fill="#FF7A45" opacity="0.06"/>
+          <rect x="620" y="90" width="320" height="220" rx="14" fill="#7B5CFF" opacity="0.07"/>
+          <rect x="360" y="330" width="300" height="220" rx="14" fill="#4FD1C5" opacity="0.05"/>
+          <!-- main avenues -->
+          <path d="M0 260 H1000" stroke="#ffffff" stroke-opacity="0.08" stroke-width="10"/>
+          <path d="M0 430 H1000" stroke="#ffffff" stroke-opacity="0.06" stroke-width="6"/>
+          <path d="M330 0 V600" stroke="#ffffff" stroke-opacity="0.08" stroke-width="10"/>
+          <path d="M700 0 V600" stroke="#ffffff" stroke-opacity="0.06" stroke-width="6"/>
+          <!-- LRT line -->
+          <path d="M20 520 C 260 560, 420 260, 520 220 C 650 170, 780 150, 970 60" fill="none" stroke="#3A3860" stroke-width="7" stroke-linecap="round"/>
+          <path d="M20 520 C 260 560, 420 260, 520 220 C 650 170, 780 150, 970 60" fill="none" stroke="#5C5A8C" stroke-width="1.6" stroke-dasharray="1 10" stroke-linecap="round"/>
+          <!-- robot tunnel route -->
+          <path id="routePath" d="M110 470 C 220 430, 260 340, 330 300 C 420 250, 470 250, 540 260 C 640 275, 700 250, 760 190 C 820 130, 860 120, 900 110" fill="none" stroke="#FF7A45" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round" opacity="0.85"/>
+          <circle id="routeBot" r="6" fill="#0A0A14" stroke="#FF7A45" stroke-width="2"/>
+        </svg>
+        <div class="map-pins" id="mapPins"></div>
+        <div class="map-tooltip" id="mapTooltip" hidden></div>
+      </div>
+      <div class="map-legend">
+        <div class="legend-item"><span class="legend-dot legend-warehouse"></span><span data-i18n="map.legWarehouse">Склад</span></div>
+        <div class="legend-item"><span class="legend-dot legend-cafe"></span><span data-i18n="map.legCafe">Кафе и магазины</span></div>
+        <div class="legend-item"><span class="legend-dot legend-admin"></span><span data-i18n="map.legAdmin">Административные здания</span></div>
+        <div class="legend-item"><span class="legend-dot legend-point"></span><span data-i18n="map.legPoint">Пункты выдачи</span></div>
+        <div class="legend-item"><span class="legend-dot legend-route"></span><span data-i18n="map.legRoute">Маршрут робота</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ORDER ===== -->
+  <section class="section" id="order">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="order.eyebrow">Отправка</span>
+      <h2 data-i18n="order.title">Оформите заказ за 4 шага</h2>
+    </div>
+
+    <div class="order-panel">
+      <form class="order-form" id="orderForm">
+        <div class="field-row">
+          <label>
+            <span data-i18n="order.from">Откуда забрать</span>
+            <select id="orderFrom">
+              <option data-i18n="order.opt.cafe">Кафе «Дастархан» — бешбармак, плов</option>
+              <option data-i18n="order.opt.pharm">Кафе «Шыгыс» — манты, лагман</option>
+              <option data-i18n="order.opt.shop">Кофе-бар «Мустай» — кофе, десерты</option>
+              <option data-i18n="order.opt.admin">Аптека «Europharma» — лекарства</option>
+            </select>
+          </label>
+          <label>
+            <span data-i18n="order.to">Пункт выдачи</span>
+            <select id="orderTo">
+              <option data-i18n="order.pt1">ПВЗ №1 — ЖК Alatau City</option>
+              <option data-i18n="order.pt2">ПВЗ №2 — ЖК Highvill</option>
+              <option data-i18n="order.pt3">ПВЗ №3 — Центральная площадь</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field-full">
+          <span data-i18n="order.desc">Что доставляем</span>
+          <input type="text" id="orderDesc" data-i18n-placeholder="order.descPh" placeholder="Например: бешбармак из кафе, лекарства, документы">
+        </label>
+
+        <button type="button" class="geo-btn" id="geoBtn">
+          <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          <span data-i18n="order.geo">Найти ближайший пункт по геолокации</span>
+        </button>
+        <p class="geo-result" id="geoResult"></p>
+
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="order.submit">Отправить заказ</button>
+      </form>
+
+      <div class="order-result" id="orderResult">
+        <div class="order-result-empty" id="orderEmpty">
+          <svg viewBox="0 0 24 24" width="34" height="34"><path d="M3 10l9-6 9 6v9a1 1 0 01-1 1h-4v-6H8v6H4a1 1 0 01-1-1z"/></svg>
+          <p data-i18n="order.emptyState">Здесь появится трек-номер и штрихкод вашей посылки</p>
+        </div>
+        <div class="ticket" id="ticket" hidden>
+          <div class="ticket-head">
+            <span data-i18n="order.ticketLabel">Посылка принята складом NovaRescue</span>
+            <span class="ticket-status" id="ticketStatus" data-i18n="order.statusSorting">Сортировка</span>
+          </div>
+          <div class="ticket-code" id="ticketCode">NR-000000</div>
+          <div class="barcode" id="barcode"></div>
+          <div class="ticket-route">
+            <span id="ticketFrom">—</span>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 12h16M14 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+            <span id="ticketTo">—</span>
+          </div>
+          <div class="ticket-location" id="ticketLocation">
+            <span class="loc-dot"></span>
+            <span id="ticketLocationText" data-i18n="order.locSorting">Робот қазір: складта, жолға шығуда</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fleet-strip">
+      <figure class="fleet-photo">
+        <img src="assets/robot-fleet.jpg" alt="NovaRescue courier robot with controller">
+        <figcaption data-i18n="order.fleet1">Курьер-робот NovaRescue басқару пультімен</figcaption>
+      </figure>
+      <figure class="fleet-photo">
+        <img src="assets/robot-build.jpg" alt="NovaRescue robot chassis engineering build">
+        <figcaption data-i18n="order.fleet2">Робот шассиінің инженерлік құрылымы</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== TRACK ===== -->
+  <section class="section section-alt" id="track">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="track.eyebrow">Статус</span>
+      <h2 data-i18n="track.title">Отследите посылку по трек-номеру</h2>
+    </div>
+
+    <div class="track-panel">
+      <form class="track-form" id="trackForm">
+        <input type="text" id="trackInput" data-i18n-placeholder="track.ph" placeholder="Введите код, например NR-482913">
+        <button type="submit" class="btn btn-primary" data-i18n="track.submit">Отследить</button>
+      </form>
+
+      <div class="timeline" id="timeline">
+        <div class="tl-step active">
+          <span class="tl-dot"></span>
+          <div><b data-i18n="track.step1t">Принято складом</b><p data-i18n="track.step1p">Товар отсканирован и отсортирован</p></div>
+        </div>
+        <div class="tl-step active">
+          <span class="tl-dot"></span>
+          <div><b data-i18n="track.step2t">Передано роботу</b><p data-i18n="track.step2p">Курьер-робот начал маршрут под ЛРТ</p></div>
+        </div>
+        <div class="tl-step">
+          <span class="tl-dot"></span>
+          <div><b data-i18n="track.step3t">В пути</b><p data-i18n="track.step3p">Подземный тоннель, расчётное время — 12 мин</p></div>
+        </div>
+        <div class="tl-step">
+          <span class="tl-dot"></span>
+          <div><b data-i18n="track.step4t">В пункте выдачи</b><p data-i18n="track.step4p">Можно забрать по коду или лицу QR</p></div>
+        </div>
+      </div>
+      <div class="track-location" id="trackLocation" hidden>
+        <span class="loc-dot"></span>
+        <span id="trackLocationText"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PICKUP POINTS ===== -->
+  <section class="section" id="points">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="points.eyebrow">Сеть</span>
+      <h2 data-i18n="points.title">Пункт выдачи в каждом дворе</h2>
+      <p class="section-sub" data-i18n="points.sub">ПВЗ устанавливаются в жилых комплексах и людных местах города — заказ всегда рядом.</p>
+    </div>
+    <div class="points-grid" id="pointsGrid">
+      <div class="point-card">
+        <span class="point-dist">0.4 <span data-i18n="points.km">км</span></span>
+        <h3>ПВЗ №1 — <span data-i18n="points.p1">ЖК Alatau City</span></h3>
+        <p data-i18n="points.p1a">пр. Момышулы, 15</p>
+      </div>
+      <div class="point-card">
+        <span class="point-dist">0.9 <span data-i18n="points.km">км</span></span>
+        <h3>ПВЗ №2 — <span data-i18n="points.p2">ЖК Highvill</span></h3>
+        <p data-i18n="points.p2a">ул. Аль-Фараби, 140</p>
+      </div>
+      <div class="point-card">
+        <span class="point-dist">1.6 <span data-i18n="points.km">км</span></span>
+        <h3>ПВЗ №3 — <span data-i18n="points.p3">Центральная площадь</span></h3>
+        <p data-i18n="points.p3a">пл. Республики, 3</p>
+      </div>
+      <div class="point-card">
+        <span class="point-dist">2.1 <span data-i18n="points.km">км</span></span>
+        <h3>ПВЗ №4 — <span data-i18n="points.p4">ЖК Botanic City</span></h3>
+        <p data-i18n="points.p4a">ул. Ботанический сад, 8</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEAM / VISION ===== -->
+  <section class="section section-alt" id="team">
+    <div class="section-head">
+      <span class="section-eyebrow" data-i18n="team.eyebrow">Команда</span>
+      <h2 data-i18n="team.title">Кто стоит за NovaRescue</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-copy">
+        <p data-i18n="team.p1">Команда NovaRescue — Школа-гимназия №28. Проект объединяет безопасность, искусственный интеллект и роботизированные технологии в одну логистическую платформу нового поколения.</p>
+        <p data-i18n="team.p2">Первой площадкой для пилотного запуска рассматривается город Алатау: подземные маршруты позволят избежать пробок и сделать доставку полностью безопасной.</p>
+        <blockquote data-i18n="team.quote">«Технологии будущего для безопасной и эффективной городской логистики»</blockquote>
+        <ul class="plan-list">
+          <li data-i18n="team.plan1">Совершенствование прототипа</li>
+          <li data-i18n="team.plan2">Полноценная модель с использованием ИИ</li>
+          <li data-i18n="team.plan3">Запуск пилота в городе Алатау</li>
+          <li data-i18n="team.plan4">Интеграция в концепцию Smart City</li>
+          <li data-i18n="team.plan5">Выход на международный рынок</li>
+        </ul>
+      </div>
+      <div class="team-achieve">
+        <h3 data-i18n="team.achieveTitle">Наши достижения</h3>
+        <ul>
+          <li data-i18n="team.ach1">Проект представлен вице-министру Республики Казахстан и получил положительную оценку и поддержку</li>
+          <li data-i18n="team.ach2">Проект представлен советнику Президента Республики Казахстан</li>
+          <li data-i18n="team.ach3">Главная цель — превратить NovaRescue в востребованный технологический продукт в городах Казахстана и за его пределами</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="founder-card reveal">
+      <img src="IMG_3267.jpeg" alt="Зупар Қуаныш Омарұлы" class="founder-photo">
+      <div class="founder-info">
+        <span class="founder-role" data-i18n="team.founderRole">Негізін қалаушы · Founder</span>
+        <h3 class="founder-name">Зупар Қуаныш Омарұлы</h3>
+        <p class="founder-bio" data-i18n="team.founderBio">Идеасын және команданы біріктірген негізін қалаушы. NovaRescue жобасын Школа-гимназия №28 командасы өндіктен қалалық логистиканың болашағына сеніп жүргеміз.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="logo footer-logo">
+      <span class="logo-mark"><svg viewBox="0 0 40 40" width="26" height="26"><rect x="2" y="12" width="36" height="24" rx="8" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="13" cy="20" r="2.6" fill="currentColor"/><circle cx="27" cy="20" r="2.6" fill="currentColor"/><path d="M14 28h12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+      <span class="logo-text">Nova<b>Rescue</b></span>
+    </div>
+    <p data-i18n="footer.tag">Технологии будущего для безопасной и эффективной городской логистики.</p>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.school">Школа-гимназия №28 · г. Алатау</span>
+    <span>© 2026 NovaRescue</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
