@@ -43,7 +43,7 @@
   const render = () => {
     const t = T[lang()] || T.ru;
     sec.innerHTML = `<div class="section-head"><span class="section-eyebrow">${t.eb}</span><h2>${t.ti}</h2></div>
-    <div class="journey-grid">${t.s.map((s, i) => `<figure class="journey-card"><img src="${IMG[i]}.jpg" alt="${s[0]}" loading="lazy">
+    <div class="journey-grid">${t.s.map((s, i) => `<figure class="journey-card"><img src="assets/${IMG[i]}.jpg" alt="${s[0]}" loading="lazy">
       <div><b>0${i + 1}</b><h3>${s[0]}</h3><p>${s[1]}</p></div></figure>`).join("")}</div>`;
   };
   render();
