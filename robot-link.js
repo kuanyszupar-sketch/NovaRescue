@@ -58,13 +58,13 @@ const NRCobs = (() => {
   const SLOT_FOR_POINT = [6, 6, 6];
 
   const L = {
-    ru: { conn: "Подключить робота", ok: "Робот подключён", no: "Bluetooth не поддерживается (нужен Chrome/Edge)", wait: "Выберите робота в окне Bluetooth…",
+    ru: { conn: "Подключить робота", ok: "Робот подключён", no: "Bluetooth не поддерживается (нужен Chrome/Edge)", wait: "Выберите хаб (например vty) в окне Bluetooth…", noSvc: "Это не хаб SPIKE (или он занят приложением LEGO). Закройте приложение и нажмите Bluetooth на хабе",
       accepted: "Заказ принят · робот выехал", warn: "Заказ принят · робот не подключён", nack: "Робот не запустил программу — проверьте слот на хабе",
       arrived: "Робот у пункта выдачи", done: "Робот завершил маршрут · заказ у пункта выдачи" },
-    kk: { conn: "Роботты қосу", ok: "Робот қосылды", no: "Bluetooth қолдау таппайды (Chrome/Edge керек)", wait: "Bluetooth терезесінде роботты таңдаңыз…",
+    kk: { conn: "Роботты қосу", ok: "Робот қосылды", no: "Bluetooth қолдау таппайды (Chrome/Edge керек)", wait: "Bluetooth терезесінде хабты (мысалы vty) таңдаңыз…", noSvc: "Бұл SPIKE хабы емес немесе оны LEGO қосымшасы ұстап тұр. Қосымшаны жауып, хабтағы Bluetooth батырмасын басыңыз",
       accepted: "Тапсырыс қабылданды · робот жолға шықты", warn: "Тапсырыс қабылданды · робот қосылмаған", nack: "Робот бағдарламаны іске қоспады — хабтағы слотты тексеріңіз",
       arrived: "Робот пунктке жетті", done: "Робот маршрутты аяқтады · тапсырыс пункте" },
-    en: { conn: "Connect robot", ok: "Robot connected", no: "Bluetooth not supported (use Chrome/Edge)", wait: "Pick the robot in the Bluetooth window…",
+    en: { conn: "Connect robot", ok: "Robot connected", no: "Bluetooth not supported (use Chrome/Edge)", wait: "Pick the hub (e.g. vty) in the Bluetooth window…", noSvc: "Not a SPIKE hub, or it is busy with the LEGO app. Close the app and press the hub Bluetooth button",
       accepted: "Order accepted · robot is on its way", warn: "Order accepted · robot not connected", nack: "Robot did not start the program — check the hub slot",
       arrived: "Robot is at the pickup point", done: "Robot finished the route · order at the pickup point" }
   };
@@ -75,7 +75,7 @@ const NRCobs = (() => {
   st.textContent = ".field-row label:nth-child(2){order:-1}";
   document.head.appendChild(st);
   const btn = document.createElement("button");
-  btn.type = "button"; btn.className = "geo-btn"; btn.id = "robotBtn"; btn.textContent = "🤖 " + t().conn;
+  btn.type = "button"; btn.className = "geo-btn"; btn.id = "robotBtn"; btn.textContent = "🤖 " + t().conn + " (LEGO)";
   const info = document.createElement("p");
   info.className = "geo-result"; info.id = "robotState";
   const submit = form.querySelector('button[type="submit"]');
@@ -118,10 +118,15 @@ const NRCobs = (() => {
     if (!navigator.bluetooth) { info.textContent = t().no; return false; }
     try {
       info.textContent = t().wait;
-      const dev = await navigator.bluetooth.requestDevice({ filters: [{ services: [SVC] }] });
-      dev.addEventListener("gattserverdisconnected", () => { rx = null; info.textContent = ""; btn.textContent = "🤖 " + t().conn; });
+      const dev = await navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: [SVC] });   // барлық құрылғы көрсетіледі, "vty" таңдаңыз
+      info.textContent = "1/4 …";
+      dev.addEventListener("gattserverdisconnected", () => { rx = null; info.textContent = ""; btn.textContent = "🤖 " + t().conn + " (LEGO)"; });
       const server = await dev.gatt.connect();
-      const svc = await server.getPrimaryService(SVC);
+      info.textContent = "2/4 …";
+      let svc;
+      try { svc = await server.getPrimaryService(SVC); }
+      catch (e) { throw new Error(t().noSvc); }
+      info.textContent = "3/4 …";
       rx = await svc.getCharacteristic(RX);
       const tx = await svc.getCharacteristic(TX);
       tx.addEventListener("characteristicvaluechanged", onNotify);
@@ -129,6 +134,7 @@ const NRCobs = (() => {
       const infoReply = waitFor(0x01);
       await send([0x00]);                                  // InfoRequest
       await infoReply.catch(() => {});
+      info.textContent = "4/4 ✓";
       btn.textContent = "✓ " + (dev.name || "Robot");
       info.textContent = t().ok;
       return true;
