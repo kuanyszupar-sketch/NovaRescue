@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="kk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPIKE Bluetooth тест</title>
+<style>body{font-family:system-ui;background:#0A0A14;color:#F5F3FF;margin:0;padding:20px;max-width:760px}
+button,input{font-size:1rem;padding:12px 16px;border-radius:10px;border:1px solid #444;margin:4px 6px 4px 0}
+button{background:#7B5CFF;color:#fff;border:none;cursor:pointer}input{width:70px;background:#15142B;color:#fff}
+#log{background:#000;border:1px solid #333;border-radius:10px;padding:12px;margin-top:14px;font:13px/1.5 ui-monospace,monospace;white-space:pre-wrap;min-height:220px}
+.ok{color:#8FE38A}.err{color:#ff7a7a}</style></head><body>
+<h2>🤖 SPIKE Prime Bluetooth тест</h2>
+<p>Алдымен хабтың Bluetooth батырмасын басыңыз (көк жыпылықтасын). SPIKE қосымшасы жабық болсын.</p>
+<button id="c">1. Хабқа қосылу</button><br>
+Слот: <input id="slot" type="number" value="6" min="0" max="19">
+<button id="go">2. Іске қосу</button><button id="stop" style="background:#c0392b">Тоқтату</button>
+<div id="log"></div>
+<script>
+const SVC="0000fd02-0000-1000-8000-00805f9b34fb",RXU="0000fd02-0001-1000-8000-00805f9b34fb",TXU="0000fd02-0002-1000-8000-00805f9b34fb";
+const log=(m,c="")=>{const d=document.getElementById("log");d.innerHTML+=`<span class="${c}">${m}</span>\n`;};
+const C=(()=>{const D=2,N=255,O=2,M=84,X=3;
+function enc(d){const b=[];let ci=0,k=0;const bg=()=>{ci=b.length;b.push(N);k=1};bg();
+for(const x of d){if(x>D){b.push(x);k++}if(x<=D||k>M){if(x<=D)b[ci]=x*M+k+O;bg()}}b[ci]=k+O;return b}
+function dec(d){const o=[];const u=c=>{if(c===255)return[null,M+1];let v=Math.floor((c-O)/M),k=(c-O)%M;if(k===0){k=M;v--}return[v,k]};
+let[v,k]=u(d[0]);for(let i=1;i<d.length;i++){k--;if(k>0){o.push(d[i]);continue}if(v!==null)o.push(v);[v,k]=u(d[i])}return o}
+return{pack:d=>{const b=enc(d).map(x=>x^X);b.push(D);return Uint8Array.from(b)},unpack:f=>dec((f[0]===1?f.slice(1):f).map(x=>x^X))}})();
+let rx=null,buf=[],mp=20;
+const hex=a=>[...a].map(x=>x.toString(16).padStart(2,"0")).join(" ");
+async function send(a){const f=C.pack(a);log("→ "+hex(a));for(let i=0;i<f.length;i+=mp)await rx.writeValueWithoutResponse(f.slice(i,i+mp))}
+function onN(e){const v=new Uint8Array(e.target.value.buffer,e.target.value.byteOffset,e.target.value.byteLength);
+for(const b of v){if(b===2){if(buf.length){try{const m=C.unpack(buf);log("← "+hex(m),"ok");
+if(m[0]===1&&m.length>10){mp=m[9]|(m[10]<<8);log("  InfoResponse: max packet = "+mp)}
+if(m[0]===0x1f)log(m[1]===0?"  ProgramFlow: ACK (бағдарлама іске қосылды)":"  ProgramFlow: NACK (слотта бағдарлама жоқ немесе нөмірі басқа)",m[1]===0?"ok":"err");
+if(m[0]===0x20)log("  Бағдарлама "+(m[1]===0?"басталды":"аяқталды"));}catch(x){log("декод қатесі","err")}}buf=[]}
+else if(b===1)buf=[];else buf.push(b)}}
+document.getElementById("c").onclick=async()=>{
+ if(!navigator.bluetooth){log("✗ Бұл браузер Web Bluetooth қолдамайды. Chrome/Edge (компьютер/Android) қолданыңыз. Safari/iPhone жұмыс істемейді.","err");return}
+ try{log("Терезеде хабты таңдаңыз (мысалы vty)…");
+  const dev=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:[SVC]});
+  log("✓ Таңдалды: "+(dev.name||dev.id),"ok");
+  dev.addEventListener("gattserverdisconnected",()=>log("✗ Байланыс үзілді","err"));
+  const s=await dev.gatt.connect();log("✓ GATT қосылды","ok");
+  let svc;try{svc=await s.getPrimaryService(SVC)}catch(e){log("✗ FD02 қызметі жоқ: бұл SPIKE App 3 хабы емес, немесе хабты LEGO қосымшасы ұстап тұр. "+e.message,"err");return}
+  log("✓ FD02 қызметі табылды","ok");
+  rx=await svc.getCharacteristic(RXU);const tx=await svc.getCharacteristic(TXU);
+  tx.addEventListener("characteristicvaluechanged",onN);await tx.startNotifications();log("✓ Хабарламаларға жазылды","ok");
+  await send([0]);
+ }catch(e){log("✗ "+e.name+": "+e.message,"err")}};
+document.getElementById("go").onclick=()=>rx?send([0x1e,0,+document.getElementById("slot").value]):log("Алдымен қосылыңыз","err");
+document.getElementById("stop").onclick=()=>rx?send([0x1e,1,+document.getElementById("slot").value]):log("Алдымен қосылыңыз","err");
+</script></body></html>
