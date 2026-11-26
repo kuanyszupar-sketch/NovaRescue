@@ -63,5 +63,6 @@
     if (!D.querySelector('link[href*="map-track.css"]')) css("map-track.css");
     if (!D.querySelector('script[src*="map-track.js"]')) await js("map-track.js");
     if (!D.querySelector('script[src*="robot-link.js"]')) await js("robot-link.js");
+    if (!D.querySelector('script[src*="ai-chat.js"]')) await js("ai-chat.js");
   })();
 })();
